@@ -67,8 +67,10 @@ h1{margin:0 0 10px;font:800 clamp(28px,6vw,40px)/1.1 var(--head);letter-spacing:
 .tl li:first-child::after{background:var(--red)}
 .tl time{font-size:12.5px;color:var(--mut)}.tl h3{margin:2px 0;font:800 16px var(--head)}.tl p{margin:0;color:var(--mut);font-size:14px}
 .help{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:18px 20px;border:1px dashed var(--grey);border-radius:16px;color:var(--mut);animation:up .45s var(--ease) .2s both}
+.help b{display:block;color:var(--ink);font-size:15px}.help span{display:block;font-size:14px}.help a:not(.btn){color:var(--red);font-weight:600;text-decoration:none}
+.ways{display:flex;gap:8px;flex-wrap:wrap}.ways .btn{display:inline-block;text-decoration:none;padding:10px 16px}
 footer{text-align:center;padding:0 16px 20px;font-size:12.5px;color:var(--mut)}
-@media(max-width:520px){.card{padding:18px}.code{font-size:24px}.steps li{font-size:10.5px}.dot{width:28px;height:28px}.bar{top:13px}}
+@media(max-width:520px){.ways{width:100%}.ways .btn{flex:1;text-align:center;padding:11px 8px}.card{padding:18px}.code{font-size:24px}.steps li{font-size:10.5px}.dot{width:28px;height:28px}.bar{top:13px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -93,7 +95,9 @@ footer{text-align:center;padding:0 16px 20px;font-size:12.5px;color:var(--mut)}
 const CFG = {
   url: 'https://ioiwbwiyeuamzxmgypqa.supabase.co',
   key: 'sb_publishable_IZNAwtdKYKlHZLxBVPw_Pw_v2qzxcog',   // la misma anon key que en index.html
-  tel: '+34682860942'                          // teléfono de Carlin para el botón «Contactar» (ej. '+34982000000')
+  tel: '982284147',                // teléfono de Carlin (sin prefijo)
+  wa: '34682860942',               // WhatsApp, con prefijo y sin +
+  email: 'ventas@carlinlugo.com'
 };
 /* ========================= */
 const $ = s => document.querySelector(s);
@@ -139,7 +143,8 @@ function view(d){
       <ol class="steps"><div class="bar"><i id="fill"></i></div>${STEPS.map((s,i) => `<li class="${i<cur||done?'done':i===cur?'cur':''}"><span class="dot">${i<cur||done?CHECK:i===cur?'':i+1}</span>${s[0]}</li>`).join('')}</ol>
     </div>
     <div class="card"><ol class="tl">${shown.reverse().map(s => `<li><time>${dt(s.at)}</time><h3>${STEPS[s.i][0]}</h3><p>${s.inc ? 'Estamos reuniendo todos los artículos de tu pedido.' : STEPS[s.i][1]}</p></li>`).join('')}</ol></div>
-    <div class="help"><span>¿Tienes dudas sobre tu pedido?${CFG.tel?'':' Llámanos o pásate por Carlin Lugo.'}</span>${CFG.tel?`<a class="btn ghost" href="tel:${esc(CFG.tel)}" style="text-decoration:none">Contactar</a>`:''}</div>`;
+    <div class="help"><div><b>¿Tienes dudas sobre tu pedido?</b><span>Llama al <a href="tel:+34${CFG.tel}">${CFG.tel.replace(/(\d{3})(\d{3})(\d{3})/,'$1 $2 $3')}</a> o escríbenos:</span></div>
+      <div class="ways"><a class="btn" href="tel:+34${CFG.tel}">Llamar</a><a class="btn ghost" href="https://wa.me/${CFG.wa}?text=${encodeURIComponent('Hola, tengo una consulta sobre mi pedido ' + d.codigo)}" target="_blank" rel="noopener">WhatsApp</a><a class="btn ghost" href="mailto:${CFG.email}?subject=${encodeURIComponent('Consulta sobre el pedido ' + d.codigo)}">Email</a></div></div>`;
   requestAnimationFrame(() => requestAnimationFrame(() => $('#fill') && $('#fill').style.setProperty('--p', done ? 1 : cur/4)));
   $('#back').onclick = reset;
 }
