@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#EC0000">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="logo_carlin.png">
+<title>Seguimiento de pedido · Carlin Lugo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--red:#EC0000;--red-d:#B80000;--grey:#C8C8C8;--ink:#222;--bg:#F6F6F6;--card:#fff;--line:#E0E0E0;--mut:#5E5E5E;--ok:#1F7A4D;--ok-bg:#E3F4EA;--pill:#FDE6E6;
+--ease:cubic-bezier(.23,1,.32,1);--head:"Bricolage Grotesque",system-ui,sans-serif;--body:Figtree,system-ui,sans-serif}
+@media(prefers-color-scheme:dark){:root{--red:#FF3B3B;--bg:#161616;--card:#222;--ink:#F2F2F2;--line:#3A3A3A;--mut:#A8A8A8;--ok:#5FD08F;--ok-bg:#16301F;--pill:#3A1717}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;color:var(--ink);font:400 15px/1.45 var(--body);
+background:radial-gradient(60% 45% at 15% 0%,rgba(236,0,0,.07),transparent 70%),radial-gradient(50% 45% at 95% 100%,rgba(200,200,200,.3),transparent 70%),var(--bg);
+padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0)}
+button,input{font:inherit;color:inherit;touch-action:manipulation}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+[hidden]{display:none!important}
+header{padding:18px 20px;display:flex;justify-content:center}
+header img{height:34px;width:auto;display:block}
+main{flex:1;width:100%;max-width:720px;margin:0 auto;padding:8px 16px 40px;display:flex;flex-direction:column}
+.hero{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-bottom:8vh;animation:up .4s var(--ease)}
+h1{margin:0 0 10px;font:800 clamp(28px,6vw,40px)/1.1 var(--head);letter-spacing:-.02em}
+.hero p{margin:0 0 24px;color:var(--mut);max-width:440px}
+.box{display:flex;gap:8px;width:100%;max-width:480px;padding:6px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 24px rgba(0,0,0,.06)}
+.box input{flex:1;min-width:0;border:0;background:none;padding:10px 12px;font-size:16px;letter-spacing:.04em;text-transform:uppercase}
+.box input::placeholder{text-transform:none;letter-spacing:0;color:var(--mut)}
+.box input:focus-visible{outline:0}
+.btn{border:0;border-radius:11px;padding:11px 20px;font-weight:600;background:var(--red);color:#fff;cursor:pointer;transition:transform .15s var(--ease),background .15s}
+.btn:hover{background:var(--red-d)}.btn:active{transform:scale(.97)}.btn[disabled]{opacity:.6}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}.btn.ghost:hover{background:var(--line)}
+#err{min-height:22px;margin:14px 0 0!important;color:var(--red);font-weight:500}
+.back{align-self:flex-start;background:none;border:0;padding:8px 0;margin-bottom:6px;color:var(--ink);font-weight:600;cursor:pointer}
+.back:hover{color:var(--red)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;margin-bottom:16px;animation:up .45s var(--ease) both}
+.card:nth-child(3){animation-delay:.07s}.card:nth-child(4){animation-delay:.14s}
+@keyframes up{from{opacity:0;transform:translateY(10px)}}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.lbl{font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.code{font:800 28px/1.15 var(--head);letter-spacing:.02em}
+.pill{padding:6px 14px;border-radius:99px;background:var(--pill);color:var(--red);font-weight:600;font-size:13px;white-space:nowrap}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0 26px}
+.info div span{display:block;font-size:13px;color:var(--mut)}.info div b{font:800 17px var(--head)}
+.steps{position:relative;display:grid;grid-template-columns:repeat(5,1fr);margin:0;padding:0;list-style:none}
+.bar{position:absolute;top:15px;left:10%;right:10%;height:3px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--red);transform-origin:left;transform:scaleX(var(--p,0));transition:transform .8s var(--ease)}
+.steps li{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-size:12px;font-weight:600;color:var(--mut)}
+.dot{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--card);border:2px solid var(--line);font-size:13px;font-weight:600;transition:background .3s,border-color .3s}
+.dot svg{width:16px;height:16px}
+.steps li.done{color:var(--ink)}.steps li.done .dot{background:var(--red);border-color:var(--red);color:#fff}
+.steps li.cur{color:var(--ink)}.steps li.cur .dot{background:var(--red);border-color:var(--red);box-shadow:0 0 0 5px var(--pill)}
+.steps li.cur .dot::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
+.tl{margin:0;padding:0;list-style:none}
+.tl li{position:relative;padding:0 0 22px 28px}
+.tl li:last-child{padding-bottom:0}
+.tl li::before{content:"";position:absolute;left:4px;top:14px;bottom:-2px;width:2px;background:var(--line)}
+.tl li:last-child::before{display:none}
+.tl li::after{content:"";position:absolute;left:0;top:5px;width:10px;height:10px;border-radius:50%;background:var(--line)}
+.tl li:first-child::after{background:var(--red)}
+.tl time{font-size:12.5px;color:var(--mut)}.tl h3{margin:2px 0;font:800 16px var(--head)}.tl p{margin:0;color:var(--mut);font-size:14px}
+.help{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:18px 20px;border:1px dashed var(--grey);border-radius:16px;color:var(--mut);animation:up .45s var(--ease) .2s both}
+footer{text-align:center;padding:0 16px 20px;font-size:12.5px;color:var(--mut)}
+@media(max-width:520px){.card{padding:18px}.code{font-size:24px}.steps li{font-size:10.5px}.dot{width:28px;height:28px}.bar{top:13px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><img src="logo_carlin.png" alt="Carlin"></header>
+<main>
+  <section class="hero" id="s1">
+    <h1>Sigue tu pedido</h1>
+    <p>Introduce tu código de seguimiento para ver el estado actual y el historial de tu entrega.</p>
+    <form class="box" id="sf">
+      <input id="code" placeholder="Ej. CL-7K4M2X" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Código de seguimiento">
+      <button class="btn" id="go">Rastrear</button>
+    </form>
+    <p id="err" role="alert"></p>
+  </section>
+  <section id="s2" hidden></section>
+</main>
+<footer>Carlin Lugo</footer>
+
+<script>
+/* ===== CONFIGURACIÓN ===== */
+const CFG = {
+  url: 'https://ioiwbwiyeuamzxmgypqa.supabase.co',
+  key: 'sb_publishable_IZNAwtdKYKlHZLxBVPw_Pw_v2qzxcog',   // la misma anon key que en index.html
+  tel: '+34682860942'                          // teléfono de Carlin para el botón «Contactar» (ej. '+34982000000')
+};
+/* ========================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const live = CFG.key && !CFG.key.startsWith('PEGA');
+const STEPS = [
+  ['Recibido','Hemos registrado tu pedido correctamente.'],
+  ['Preparando','Estamos preparando tu pedido.'],
+  ['Empaquetado','Tu pedido está empaquetado y listo para salir.'],
+  ['En reparto','Tu pedido va de camino hacia ti.'],
+  ['Entregado','Tu pedido se ha entregado. ¡Gracias por confiar en Carlin!']
+];
+const IDX = {entrada:0, en_curso:1, incompleto:1, empaquetado:2, en_reparto:3, servido:4};
+const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const dt = s => new Date(s).toLocaleString('es-ES',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+const norm = s => { s = s.toUpperCase().replace(/[^A-Z0-9]/g,''); if (s.startsWith('CL')) s = s.slice(2); return s ? 'CL-' + s : ''; };
+let timer = null, last = '';
+
+async function fetchOrder(code){
+  if (!live){   // vista previa sin conexión
+    if (code !== 'CL-DEMO01') return null;
+    const h = n => new Date(Date.now() - n*36e5).toISOString();
+    return {codigo:code, cliente:'Recambios Ejemplo', estado:'en_reparto', fecha_entrega:new Date().toISOString().slice(0,10),
+      eventos:[{estado:'en_reparto',at:h(1)},{estado:'empaquetado',at:h(4)},{estado:'en_curso',at:h(20)},{estado:'entrada',at:h(26)}]};
+  }
+  const r = await fetch(CFG.url + '/rest/v1/rpc/seguimiento', {method:'POST',
+    headers:{apikey:CFG.key, Authorization:'Bearer ' + CFG.key, 'Content-Type':'application/json'},
+    body:JSON.stringify({p_codigo:code})});
+  if (!r.ok) throw new Error('http');
+  return r.json();
+}
+
+function view(d){
+  const cur = IDX[d.estado] ?? 0, done = cur === 4;
+  const ev = [...(d.eventos || [])].sort((a,b) => new Date(a.at) - new Date(b.at)), shown = [];
+  for (const e of ev){ const i = IDX[e.estado] ?? 0; if (!shown.length || shown[shown.length-1].i !== i) shown.push({i, at:e.at, inc:e.estado==='incompleto'}); }
+  const fecha = d.fecha_entrega ? new Date(d.fecha_entrega + 'T12:00').toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'}) : 'Por confirmar';
+  $('#s2').innerHTML = `
+    <button class="back" id="back">← Buscar otro pedido</button>
+    <div class="card">
+      <div class="top"><div><div class="lbl">Pedido</div><div class="code">${esc(d.codigo)}</div></div><span class="pill ${done?'ok':''}">${STEPS[cur][0]}</span></div>
+      <div class="info"><div><span>Cliente</span><b>${esc(d.cliente)}</b></div><div><span>Entrega estimada</span><b>${fecha}</b></div></div>
+      <ol class="steps"><div class="bar"><i id="fill"></i></div>${STEPS.map((s,i) => `<li class="${i<cur||done?'done':i===cur?'cur':''}"><span class="dot">${i<cur||done?CHECK:i===cur?'':i+1}</span>${s[0]}</li>`).join('')}</ol>
+    </div>
+    <div class="card"><ol class="tl">${shown.reverse().map(s => `<li><time>${dt(s.at)}</time><h3>${STEPS[s.i][0]}</h3><p>${s.inc ? 'Estamos reuniendo todos los artículos de tu pedido.' : STEPS[s.i][1]}</p></li>`).join('')}</ol></div>
+    <div class="help"><span>¿Tienes dudas sobre tu pedido?${CFG.tel?'':' Llámanos o pásate por Carlin Lugo.'}</span>${CFG.tel?`<a class="btn ghost" href="tel:${esc(CFG.tel)}" style="text-decoration:none">Contactar</a>`:''}</div>`;
+  requestAnimationFrame(() => requestAnimationFrame(() => $('#fill') && $('#fill').style.setProperty('--p', done ? 1 : cur/4)));
+  $('#back').onclick = reset;
+}
+function show(on){ $('#s1').hidden = on; $('#s2').hidden = !on; window.scrollTo(0,0); }
+function reset(){ clearInterval(timer); last = ''; history.replaceState(null,'',location.pathname); show(false); $('#code').value=''; $('#code').focus(); }
+
+async function track(raw, silent){
+  const code = norm(raw);
+  if (!code) return;
+  if (!silent){ $('#err').textContent=''; $('#go').disabled = true; }
+  try {
+    const d = await fetchOrder(code);
+    if (!d){ if (!silent) $('#err').textContent = 'No encontramos ese código. Revísalo o consulta con Carlin. Los pedidos entregados dejan de estar disponibles pasado un día.'; return; }
+    const sig = JSON.stringify(d);
+    if (sig !== last){ last = sig; view(d); }
+    if (!silent){ show(true); history.replaceState(null,'','?c=' + code); clearInterval(timer); timer = setInterval(() => track(code, true), 20000); }
+  } catch(e){ if (!silent) $('#err').textContent = 'No se pudo conectar. Inténtalo de nuevo en unos segundos.'; }
+  finally { if (!silent) $('#go').disabled = false; }
+}
+$('#sf').onsubmit = e => { e.preventDefault(); track($('#code').value); };
+document.addEventListener('visibilitychange', () => { if (!document.hidden && !$('#s2').hidden) track(new URLSearchParams(location.search).get('c') || '', true); });
+const q = new URLSearchParams(location.search).get('c'); if (q){ $('#code').value = q; track(q); }
+</script>
+</body>
+</html>
